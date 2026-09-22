@@ -92,7 +92,7 @@ Balance opportunity and capital preservation. Challenge both overconfidence and 
                 risk_debate_state.get("conservative_history", "")
             ),
             "neutral_history": (
-                neutral_history + "\\n" + argument
+                neutral_history + "\n" + argument
             ),
             "latest_speaker": "Neutral",
             "current_aggressive_response": (
