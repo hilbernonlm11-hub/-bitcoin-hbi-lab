@@ -86,7 +86,7 @@ Argue for taking risk only when the evidence shows a genuine asymmetric opportun
         new_risk_debate_state = {
             "history": history + "\n" + argument,
             "aggressive_history": (
-                aggressive_history + "\\n" + argument
+                aggressive_history + "\n" + argument
             ),
             "conservative_history": (
                 risk_debate_state.get("conservative_history", "")
