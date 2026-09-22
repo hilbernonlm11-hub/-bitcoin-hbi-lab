@@ -49,7 +49,7 @@ RISK_ANALYSIS_PATH_MAP = {
 }
 
 STOCK_DEFAULT_ANALYSTS = ("market", "social", "news", "fundamentals")
-CRYPTO_DEFAULT_ANALYSTS = ("market", "derivatives", "social", "catalyst", "regime")
+CRYPTO_DEFAULT_ANALYSTS = ("market", "derivatives", "social", "news", "catalyst", "regime")
 
 
 class GraphSetup:
