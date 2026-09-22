@@ -29,6 +29,7 @@ def _crypto_reports_block(state: dict) -> str:
         ("Market Structure", state.get("market_report") or ""),
         ("Derivatives", state.get("derivatives_report") or ""),
         ("Sentiment", state.get("sentiment_report") or ""),
+        ("News / Macro", state.get("news_report") or ""),
         ("Catalyst", state.get("catalyst_report") or ""),
         ("Regime", state.get("regime_report") or ""),
     ]

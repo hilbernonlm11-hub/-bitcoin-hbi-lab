@@ -12,45 +12,98 @@ def create_neutral_debator(llm):
 
         current_aggressive_response = risk_debate_state.get("current_aggressive_response", "")
         current_conservative_response = risk_debate_state.get("current_conservative_response", "")
+        current_neutral_response = risk_debate_state.get("current_neutral_response", "")
 
-        market_research_report = state["market_report"]
-        sentiment_report = state["sentiment_report"]
-        news_report = state["news_report"]
-        fundamentals_report = state["fundamentals_report"]
+        market_report = state.get("market_report", "")
+        sentiment_report = state.get("sentiment_report", "")
+        news_report = state.get("news_report", "")
+        fundamentals_report = state.get("fundamentals_report", "")
+        derivatives_report = state.get("derivatives_report", "")
+        catalyst_report = state.get("catalyst_report", "")
+        regime_report = state.get("regime_report", "")
         instrument_context = get_instrument_context_from_state(state)
+        trader_decision = state.get("trader_investment_plan", "")
+        asset_type = state.get("asset_type", "stock")
 
-        trader_decision = state["trader_investment_plan"]
+        if asset_type == "crypto":
+            prompt = f"""You are the Neutral Risk Analyst for a crypto perpetual-futures desk.
+Evaluate the trader proposal from a neutral risk perspective. Use the
+actual crypto reports below and do not invent market data.
 
-        prompt = f"""As the Neutral Risk Analyst, your role is to provide a balanced perspective, weighing both the potential benefits and risks of the trader's decision or plan. You prioritize a well-rounded approach, evaluating the upsides and downsides while factoring in broader market trends, potential economic shifts, and diversification strategies.Here is the trader's decision:
-
+Trader proposal:
 {trader_decision}
 
-Your task is to challenge both the Aggressive and Conservative Analysts, pointing out where each perspective may be overly optimistic or overly cautious. Use insights from the following data sources to support a moderate, sustainable strategy to adjust the trader's decision:
-
+Evidence:
 {instrument_context}
-Market Research Report: {market_research_report}
+Market Structure Report: {market_report}
+Derivatives Report: {derivatives_report}
+Sentiment Report: {sentiment_report}
+News / Macro Report: {news_report}
+Catalyst Report: {catalyst_report}
+Market Regime Report: {regime_report}
+
+Risk debate history:
+{history}
+Aggressive view: {current_aggressive_response}
+Conservative view: {current_conservative_response}
+Neutral view: {current_neutral_response}
+
+Assess:
+- Whether LONG, SHORT, or NO_TRADE is justified by current structure.
+- Funding, open interest, premium, liquidation and squeeze risk.
+- Volatility, liquidity, spread, regime, and stale/missing-data risk.
+- Entry/stop/take-profit coherence and asymmetry of reward versus risk.
+- Macro/news/catalyst risks that could invalidate the trade.
+- Whether size or leverage should be reduced, or the trade rejected.
+
+Balance opportunity and capital preservation. Challenge both overconfidence and excessive caution, and prefer NO_TRADE when evidence is mixed.
+Do not use company-fundamental concepts. Be explicit when evidence is weak or missing.
+The deterministic risk gate remains the final authority; your job is to surface the
+strongest relevant risk arguments for it and the Portfolio Manager."""
+        else:
+            prompt = f"""As the Neutral Risk Analyst, evaluate the trader's decision from a
+neutral risk perspective.
+
+Trader decision:
+{trader_decision}
+
+Context:
+{instrument_context}
+Market Research Report: {market_report}
 Social Media Sentiment Report: {sentiment_report}
 Latest World Affairs Report: {news_report}
 Company Fundamentals Report: {fundamentals_report}
-Here is the current conversation history: {history} Here is the last response from the aggressive analyst: {current_aggressive_response} Here is the last response from the conservative analyst: {current_conservative_response}. If there are no responses from the other viewpoints yet, present your own argument based on the available data.
+Risk debate history: {history}
+Aggressive view: {current_aggressive_response}
+Conservative view: {current_conservative_response}
+Neutral view: {current_neutral_response}
 
-Engage actively by analyzing both sides critically, addressing weaknesses in the aggressive and conservative arguments to advocate for a more balanced approach. Challenge each of their points to illustrate why a moderate risk strategy might offer the best of both worlds, providing growth potential while safeguarding against extreme volatility. Focus on debating rather than simply presenting data, aiming to show that a balanced view can lead to the most reliable outcomes. Output conversationally as if you are speaking without any special formatting.""" + get_language_instruction()
+Balance opportunity and capital preservation. Challenge both overconfidence and excessive caution, and prefer NO_TRADE when evidence is mixed."""
 
-        response = llm.invoke(prompt)
-
+        response = llm.invoke(prompt + get_language_instruction())
         argument = f"Neutral Analyst: {response.content}"
 
         new_risk_debate_state = {
             "history": history + "\n" + argument,
-            "aggressive_history": risk_debate_state.get("aggressive_history", ""),
-            "conservative_history": risk_debate_state.get("conservative_history", ""),
-            "neutral_history": neutral_history + "\n" + argument,
-            "latest_speaker": "Neutral",
-            "current_aggressive_response": risk_debate_state.get(
-                "current_aggressive_response", ""
+            "aggressive_history": (
+                risk_debate_state.get("aggressive_history", "")
             ),
-            "current_conservative_response": risk_debate_state.get("current_conservative_response", ""),
-            "current_neutral_response": argument,
+            "conservative_history": (
+                risk_debate_state.get("conservative_history", "")
+            ),
+            "neutral_history": (
+                neutral_history + "\n" + argument
+            ),
+            "latest_speaker": "Neutral",
+            "current_aggressive_response": (
+                risk_debate_state.get("current_aggressive_response", "")
+            ),
+            "current_conservative_response": (
+                risk_debate_state.get("current_conservative_response", "")
+            ),
+            "current_neutral_response": (
+                argument
+            ),
             "count": risk_debate_state["count"] + 1,
         }
 

@@ -143,6 +143,8 @@ DEFAULT_CONFIG = _apply_env_overrides({
         "geopolitical risk trade war sanctions",
         "ECB Bank of England BOJ central bank policy",
         "oil commodities supply chain energy",
+        "Bitcoin crypto regulation ETF stablecoin market structure",
+        "crypto exchange regulation digital assets institutional flows",
     ],
     # Data vendor configuration
     # Category-level configuration (default for all tools in category).
@@ -193,9 +195,9 @@ DEFAULT_CONFIG = _apply_env_overrides({
     "paper_starting_balance": 100000,
     "paper_fee_bps": 4.5,
     "paper_slippage_bps": 2.0,
-    "paper_max_leverage": 3.0,
+    "paper_max_leverage": 1.0,
     "paper_max_position_pct": 10.0,
-    "paper_risk_per_trade_pct": 1.0,
+    "paper_risk_per_trade_pct": 0.5,
     "paper_min_reward_risk": 1.5,
     "paper_max_spread_bps": 30.0,
     "paper_database_path": os.path.join(_TRADINGAGENTS_HOME, "circuit", "paper.db"),
