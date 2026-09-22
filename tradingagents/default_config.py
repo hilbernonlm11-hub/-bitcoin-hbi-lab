@@ -143,6 +143,8 @@ DEFAULT_CONFIG = _apply_env_overrides({
         "geopolitical risk trade war sanctions",
         "ECB Bank of England BOJ central bank policy",
         "oil commodities supply chain energy",
+        "Bitcoin crypto regulation ETF stablecoin market structure",
+        "crypto exchange regulation digital assets institutional flows",
     ],
     # Data vendor configuration
     # Category-level configuration (default for all tools in category).
