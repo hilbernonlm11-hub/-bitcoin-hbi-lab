@@ -89,7 +89,7 @@ Prioritize capital preservation. Challenge weak evidence, crowded positioning, p
                 risk_debate_state.get("aggressive_history", "")
             ),
             "conservative_history": (
-                conservative_history + "\\n" + argument
+                conservative_history + "\n" + argument
             ),
             "neutral_history": (
                 risk_debate_state.get("neutral_history", "")
